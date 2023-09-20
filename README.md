@@ -1,2 +1,3 @@
-# azure-serverless-experiments
-Experiments using Azure serverless technologies.  This repo serves as a playground to experiment and learn with code examples.
+# azure-experiments
+
+Experiments using Azure services. This repo serves as a playground to experiment and learn with code examples using technologies like serverless and OpenAI.
