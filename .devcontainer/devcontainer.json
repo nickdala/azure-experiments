@@ -41,6 +41,8 @@
 				//"vmware.vscode-boot-dev-pack",
 				// YAML language support
 				"redhat.vscode-yaml",
+                // EditorConfig
+                "EditorConfig.EditorConfig",
 				// Terraform
 				//"ms-azuretools.vscode-azureterraform"
                 // Go
