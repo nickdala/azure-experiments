@@ -1,0 +1,29 @@
+[
+    {
+        "allowedMemberTypes": [
+            "User"
+        ],
+        "description": "Read Only User - only has read access to the application",
+        "displayName": "Read Only User",
+        "isEnabled": "true",
+        "value": "ReadOnly"
+    },
+    {
+        "allowedMemberTypes": [
+            "User"
+        ],
+        "description": "Admin - has full access to the application",
+        "displayName": "Admin",
+        "isEnabled": "true",
+        "value": "Admin"
+    },
+    {
+        "allowedMemberTypes": [
+            "User"
+        ],
+        "description": "Dashboard User - has access to the dashboard",
+        "displayName": "Dashboard User",
+        "isEnabled": "true",
+        "value": "Dashboard"
+    }
+]
