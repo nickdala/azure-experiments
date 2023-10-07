@@ -19,7 +19,15 @@ Getting started is simple!  To run this sample you will need is the following:
 Login to Azure using the Azure CLI.
 
 ```shell
-az login
+az login --scope https://graph.microsoft.com//.default
+```
+
+Optional: Set the default subscription. If you have multiple subscriptions, you can list them using `az account list`.
+
+```shell
+az account list --output table
+
+az account set --subscription <subscription-id>
 ```
 
 ### 2. Register Application with Azure AD
@@ -33,11 +41,12 @@ export AD_DISPLAY_NAME=identity-nickdala-app
 Create an Application registration with Azure AD and save the output.
 
 ```shell
-az ad app create --display-name $AD_DISPLAY_NAME \
-  --sign-in-audience AzureADMyOrg \
-  --web-redirect-uris http://localhost:8080/login/oauth2/code/ \
-  --app-roles @data/manifest.json \
-  --enable-id-token-issuance > ad-app.json
+az ad app create \
+--display-name $AD_DISPLAY_NAME \
+--sign-in-audience AzureADMyOrg \
+--web-redirect-uris http://localhost:8080/login/oauth2/code/ \
+--app-roles @data/manifest.json \
+--enable-id-token-issuance > ad-app.json
 ```
 
 Detailed information about redirect URIs can be found [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#add-a-redirect-uri).
@@ -48,6 +57,8 @@ Retrieve the Application ID and reset the client secret:
 
 ```shell
 AD_APP_ID=$(jq -r '.appId' ad-app.json)
+
+echo $AD_APP_ID
 
 az ad app credential reset --id ${AD_APP_ID} --append > ad-credentials.json
 ```
