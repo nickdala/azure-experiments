@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
-@RequestMapping("/api/whoami")
+@RequestMapping("/whoami")
 public class WhoAmIController {
     private static final Logger log = LoggerFactory.getLogger(WhoAmIController.class);
 

@@ -16,14 +16,5 @@
         "displayName": "Admin",
         "isEnabled": "true",
         "value": "Admin"
-    },
-    {
-        "allowedMemberTypes": [
-            "User"
-        ],
-        "description": "Dashboard User - has access to the dashboard",
-        "displayName": "Dashboard User",
-        "isEnabled": "true",
-        "value": "Dashboard"
     }
 ]
