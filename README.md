@@ -16,20 +16,20 @@ If you have the [Remote - Containers](https://marketplace.visualstudio.com/items
 
 1. Start VS Code and run Dev Containers: Clone Repository in Container Volume... from the Command Palette (F1).
 
-![clone-repo-in-volume](assets/clone-repo-in-container-volume.png)
+    ![clone-repo-in-volume](assets/clone-repo-in-container-volume.png)
 
 1. Enter nickdala/azure-experiments in the input box that appears and press Enter.
 
-![nickdala-azure-experiments-repo-to-clone](assets/nickdala-azure-experiments-dev-container.png)
+    ![nickdala-azure-experiments-repo-to-clone](assets/nickdala-azure-experiments-dev-container.png)
 
 1. Open a terminal in VS Code
 
-Open a terminal in VS Code using one of the following methods.
+    Open a terminal in VS Code using one of the following methods.
 
-* From the menu, use the Terminal > New Terminal or View > Terminal menu commands.
-* To create a new terminal, use the Ctrl+Shift+` keyboard shortcut.
+    * From the menu, use the Terminal > New Terminal or View > Terminal menu commands.
+    * To create a new terminal, use the Ctrl+Shift+` keyboard shortcut.
 
-![open-terminal-in-vs-code](assets/vscode-terminal.png)
+    ![open-terminal-in-vs-code](assets/vscode-terminal.png)
 
 ### Local development without Dev Container
 
