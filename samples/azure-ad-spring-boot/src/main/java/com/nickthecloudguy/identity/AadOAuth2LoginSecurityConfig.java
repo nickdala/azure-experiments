@@ -36,7 +36,12 @@ public class AadOAuth2LoginSecurityConfig {
         http.apply(AadWebApplicationHttpSecurityConfigurer.aadWebApplication())
                 .and()
                 .authorizeHttpRequests()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and()
+                .logout(logout -> logout
+                            .deleteCookies("JSESSIONID", "XSRF-TOKEN")
+                            .clearAuthentication(true)
+                            .invalidateHttpSession(true));
         // Do some custom configuration.
         return http.build();
     }
