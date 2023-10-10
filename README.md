@@ -8,6 +8,8 @@ This repo serves as a playground to experiment and learn with code examples usin
 
 All samples contain a README.md file with instructions on how to run the sample. The README contains a prerequisite section that lists the tools you need to have installed to run the sample. You can choose to use the Dev Container in VS Code or install the tools locally.
 
+We will us the [AZ CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) to deploy the necessary Azure resource for the samples. Alternatives like [Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview) or [Terraform](https://www.terraform.io/) can also be used.
+
 ### Dev Container
 
 If you have the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension installed in VS Code, you can open the root folder in a container and run the sample. The dev container has all the tools you need to run the sample.

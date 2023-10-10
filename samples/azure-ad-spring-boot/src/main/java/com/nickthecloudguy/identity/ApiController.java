@@ -17,14 +17,14 @@ public class ApiController {
     @PreAuthorize("hasAuthority('APPROLE_Admin')")
     public String admin() {
         log.info("admin");
-        return "Welcome to the admin page!";
+        return "Hello Admin User!";
     }
 
     @GetMapping("/readonly")
     @PreAuthorize("hasAuthority('APPROLE_ReadOnly')")
     public String readonly() {
         log.info("readonly");
-        return "Welcome to the readonly page!";
+        return "Hello ReadOnly User!";
     }
 
 }

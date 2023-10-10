@@ -65,7 +65,9 @@ az ad app credential reset --id ${AD_APP_ID} --append > ad-credentials.json
 
 ### 4. Create a Service Principal
 
-Create a Service Principal for the Application Registration.
+Create a Service Principal for the Application Registration. The Service Principal is used to authenticate the application to Azure AD. The Service Principal defines the permissions that the application has in Azure AD. The Service Principal is also used to authenticate the application to Azure resources.
+
+For more information about Service Principals, see [Application and service principal objects in Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals).
 
 ```shell
 az ad sp create --id ${AD_APP_ID}
@@ -87,7 +89,9 @@ echo "TENANT_ID: ${TENANT_ID}"
 
 ### 6. Application ID URI
 
-Update the Application ID URI.
+Update the Application ID URI. The Application ID URI is used to identify the application in Azure AD. The Application ID URI is used to grant permissions to the application.
+
+For more information about Application ID URI, see [Application and service principal objects in Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals).
 
 ```shell
 AD_APP_ID_URI="api://${CLIENT_ID}"
@@ -101,6 +105,112 @@ Assign the current user to the Application Registration.
 
 ```shell
 az ad app owner add --id ${AD_APP_ID} --owner-object-id $(az ad signed-in-user show --query id --output tsv)
+```
+
+### 8. Give current user access to the application as a Readonly user
+
+Navigate to the Azure Portal and open the Application Registration you created earlier.
+
+![identity-app-registration](assets/identity-app-registration.png)
+
+Let's take a look at the application roles that we defined earlier in the data/manifest.json file. Click on the `App Roles`. This will open the application roles blade. You should see the `ReadOnly` and `Admin` roles.
+
+![app-roles](assets/app-roles.png)
+
+Next, click on the `Managed application in local directory` link. This will open the application in the Azure AD portal.
+
+![identity-app-registration-managed-application](assets/identity-app-registration-managed-application.png)
+
+Click on the `Users and groups` tab and add the current user as a member of the application. Assign the `ReadOnly` role to the user.
+
+![read-only-ueser](assets/read-only-user.png)
+
+## Run the application
+
+Update the `application.properties` file with the Azure AD variables. This file is located in the `src/main/resources` directory.
+
+```shell
+spring.cloud.azure.active-directory.credential.client-id=${CLIENT_ID}
+spring.cloud.azure.active-directory.credential.client-secret=${CLIENT_SECRET}
+spring.cloud.azure.active-directory.profile.tenant-id=${TENANT_ID}
+```
+
+Run the application.
+
+On Mac/Linux:
+
+```shell
+./mvnw spring-boot:run
+```
+
+On Windows:
+
+```shell
+mvnw.cmd spring-boot:run
+```
+
+## Test the application
+
+
+### Login to the application
+
+Open a browser and navigate to `http://localhost:8080`. You should be redirected to the Azure AD login page.
+
+Login with your your Azure AD credentials, and grant the application access to your account. This will redirect you back to the application's home page.
+
+### Get User Information
+
+Navigate to `http://localhost:8080/whomai`. You should see the user information returned in JSON format.
+
+```json
+{
+    "name": "Nikolaos Dalalelis",
+    "claims": [
+        "sub=oUxDZhgz0-hMaKcD3TBkqV44q4U40Z48kwlVlP2ok3c",
+        "ver=2.0",
+        "roles=[ReadOnly]",
+        "name=Nikolaos Dalalelis",
+        "exp=2023-10-08T14:58:37Z",
+        "iat=2023-10-08T13:53:37Z"
+    ],
+    "authorities": [
+        "APPROLE_ReadOnly"
+    ]
+}
+```
+
+### Navigate to the Read Only Page
+
+Navigate to `http://localhost:8080/api/read-only`. You should see the following message:
+
+```text
+Hello ReadOnly User!
+```
+
+### Navigate to the Admin Page
+
+Navigate to `http://localhost:8080/api/admin`. You should see a `403 Access Denied` error.
+
+```json
+{
+"type": "about:blank",
+"title": "Internal Server Error",
+"status": 500,
+"detail": "Access Denied",
+"instance": "/api/admin"
+}
+```
+
+### Logout
+
+Try giving the use the `Admin` role and navigating to the `http://localhost:8080/api/admin` page again. Make sure to logout from the application by navigating to `http://localhost:8080/logout`.
+
+After logging out, try navigating to the `http://localhost:8080/api/admin` page again. You will need to login again.
+
+You should see the following message:
+
+```text
+Hello Admin User!
 ```
 
 ## Resources
