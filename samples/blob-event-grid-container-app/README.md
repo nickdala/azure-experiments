@@ -1,8 +1,12 @@
 # Azure Blob storage to Azure Event Grid and Azure Container App Job
 
-This pattern demonstrates how to use *Azure Blob storage* with *Azure Event Grid* subscriptions and *Azure Container Apps*. Azure Event Grid is an eventing service for the cloud. We'll demonstrate how an event is published to Azure Storage Queue once we upload a file to Azure Blob Storage. That event will be pulled and processed by an Azure Container App Job.
+This pattern demonstrates how to use `Azure Blob Storage` with `Azure Event Grid` subscriptions. Azure Event Grid is an eventing service for the cloud. We'll demonstrate how an event is published to `Azure Storage Queue` once we upload a file to Azure Blob Storage. The event will be pulled and processed by an `Azure Container App Job`. The Container App Job will insert some metadata into an `Azure Cosmos DB for MongoDB API database`.
 
 See the [Blob storage events schema](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-blob-storage?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=event-grid-event-schema) article to view the full list of the events that Blob storage supports.
+
+## Architecture
+
+![Architecture](./assets/architecture.png)
 
 ## Prerequisites
 
@@ -11,30 +15,30 @@ See the [Blob storage events schema](https://learn.microsoft.com/en-us/azure/eve
 
 There's a dev container in the repository that you can use to develop the application in a container. If you're using VS Code, you can open the repository in a container by selecting the **Remote Containers: Open Repository in Container...** command from the Command Palette (F1) or by using the **Open Repository in Container** button on the Source Control tab.
 
-## Setup
+## Run the sample
 
-1. Change to the directory that contains the sample code.
+### Login to Azure
 
-    ```bash
-    cd examples/blob-event-grid-container-app
-    ```
+1. Login to Azure using the Azure CLI.
 
-1. Edit and source the `env.sh` file to set the environment variables.
-
-    ```bash
-    source ./env.sh
-    ```
-
-1. Login to Azure.
-
-    ```bash
+    ```shell
     az login
     ```
 
-1. Set the default subscription.
+    Optional: Set the default subscription. If you have multiple subscriptions, you can list them using `az account list`.
+
+    ```shell
+    az account list --output table
+
+    az account set --subscription <subscription-id>
+    ```
+
+### Set environment variables
+
+1. Source the `env.sh` file in the scripts directory. You can edit the `env.sh` file to change the default values. Some Azure resources must have globally unique names. The script will append a random string to the names you provide.
 
     ```bash
-    az account set --subscription "$SUBSCRIPTION_ID"
+    source ./scripts/env.sh
     ```
 
 ### Verify that the Microsoft.EventGrid is registered.
@@ -80,7 +84,7 @@ az provider register --namespace Microsoft.EventGrid
     STORAGE_CONNECTION_STRING=`az storage account show-connection-string --resource-group $RESOURCE_GROUP --name $STORAGE_ACCOUNT_NAME --query connectionString --output tsv`
     ```
 
-1. Create the container.
+1. Create the text container.
 
     ```bash
     az storage container create --name $STORAGE_CONTAINER_NAME_TEXT --account-name $STORAGE_ACCOUNT_NAME --connection-string $STORAGE_CONNECTION_STRING
@@ -143,8 +147,15 @@ az storage blob upload \
 
 ### Take a look at the Azure Portal
 
+In the Azure Portal, you will see the storage account, the storage container, the storage queue, and the event subscription. We just uploaded a file to the storage container. The event subscription will publish an event to the storage queue. Let's take a look at the `storage queue`.
+
+![storage-queue-blob-event](./assets/StorageQueueBlobEvent.png)
+
+Notice the event is in the queue. The event is of the type [BlobCreated](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-blob-storage?tabs=event-grid-event-schema#microsoftstorageblobcreated-event). Next, we will build the app to process the message and deploy it as an `Azure Container App Job`.
 
 ### Azure Container Apps
+
+The source code for the Azure Container App Job is [here](./main.go). The app is written in Go. The app will process the message from the storage queue and insert data into an `Azure Cosmos DB for MongoDB API database`.
 
 1. Create the Azure Container Registry
 
@@ -172,8 +183,7 @@ az storage blob upload \
     az acr build \
       --registry "$CONTAINER_REGISTRY_NAME" \
       --image "$CONTAINER_IMAGE_NAME" \
-      --file Dockerfile \
-      .
+      --file Dockerfile .
     ```
 
 1. Verify the Docker image was pushed to the Azure Container Registry.
@@ -183,16 +193,16 @@ az storage blob upload \
     ```
 
 1. Create the App Environment.
-    
-        ```bash
-        az containerapp env create \
+
+    ```bash
+    az containerapp env create \
         --name "$ACA_ENVIRONMENT" \
         --resource-group "$RESOURCE_GROUP" \
         --location "$REGION" \
         --tags system="$TAG"
-        ```
+    ```
 
-1. Create the Azure Container App.
+1. Create the Azure Container App Job.
 
     ```bash
     az containerapp job create \
