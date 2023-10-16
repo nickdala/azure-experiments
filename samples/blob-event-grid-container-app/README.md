@@ -1,6 +1,6 @@
 # Azure Blob storage to Azure Event Grid and Azure Container App Job
 
-This pattern demonstrates how to use `Azure Blob Storage` with `Azure Event Grid` subscriptions. Azure Event Grid is an eventing service for the cloud. We'll demonstrate how an event is published to `Azure Storage Queue` once we upload a file to Azure Blob Storage. The event will be pulled and processed by an `Azure Container App Job`. The Container App Job will insert some metadata into an `Azure Cosmos DB for MongoDB API database`.
+This pattern demonstrates how to use `Azure Blob Storage` with `Azure Event Grid` subscriptions. Azure Event Grid is an eventing service for the cloud. We'll demonstrate how an event is published to `Azure Storage Queue` once we upload a file to Azure Blob Storage. The event will be pulled and processed by an `Azure Container App Job`. 
 
 See the [Blob storage events schema](https://learn.microsoft.com/en-us/azure/event-grid/event-schema-blob-storage?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&tabs=event-grid-event-schema) article to view the full list of the events that Blob storage supports.
 
@@ -179,7 +179,7 @@ Let's take a look at the storage container. You should see the sample.txt file w
     ![storage-blob-text-sample](./assets/storage-blob-text-sample.png)
 
 
- The event subscription publish an event to the storage queue after the file was uploaded. Let's take a look at the `storage queue`.
+ The event subscription published an event to the storage queue after the file was uploaded. Let's take a look at the `storage queue`.
 
  1. Navigate to the storage account.
  1. Click on the storage queue.
