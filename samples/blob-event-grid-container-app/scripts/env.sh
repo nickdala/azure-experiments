@@ -1,7 +1,7 @@
 readonly SUBSCRIPTION_ID=$(az account show --query id --output tsv)
 readonly PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/.. && pwd)"
 
-export REGION="eastus"                # Replace with your desired region
+export REGION="eastus2"                # Replace with your desired region
 
 export PROJECT="blob-subsription-sample-nickdala"
 export RESOURCE_GROUP="rg-$PROJECT"

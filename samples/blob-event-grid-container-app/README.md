@@ -15,19 +15,15 @@ See the [Blob storage events schema](https://learn.microsoft.com/en-us/azure/eve
 
 ## Run the sample
 
-### 1. Clone the repository
+### 1. Clone the repository and change directory
 
 ```bash
 git clone https://github.com/nickdala/azure-experiments.git
-```
 
-### 2. Change directory
-
-```bash
 cd azure-experiments/samples/blob-event-grid-container-app
 ```
 
-### 3. Login to Azure
+### 2. Login to Azure
 
 Login to Azure using the Azure CLI.
 
@@ -42,13 +38,17 @@ az account list --output table
 
 az account set --subscription <subscription-id>
 ```
-
-### 4. Verify that the Microsoft.EventGrid is registered.
-
-> You must have the Event Grid provider registered in your subscription.
+### 3. Install the latest version of the Azure Container Apps CLI extension.
 
 ```bash
-az provider list --query "[?contains(namespace,'Microsoft.EventGrid')]" -o table
+az extension add --name containerapp --upgrade
+```
+
+### 4. Register the Microsoft.EventGrid, Microsoft.App and Microsoft.OperationalInsights namespaces.
+
+
+```bash
+az provider list --query "[?namespace == 'Microsoft.EventGrid']" -o table
 ```
 
 You should see something like the following.
@@ -63,6 +63,10 @@ If the *RegistrationState* is not *Registered*, the run the following to registe
 
 ```bash
 az provider register --namespace Microsoft.EventGrid
+
+az provider register --namespace Microsoft.App
+
+az provider register --namespace Microsoft.OperationalInsights
 ```
 
 ### 5. Set environment variables
@@ -285,7 +289,50 @@ This will bring you to the Container App Job resource. Here, you can see things 
 
 Click on the `Console Logs` link. You should see the following.
 
+![container-app-job-logs](./assets/container-app-job-logs.png)
 
+#### Query job execution logs
+
+1. Save the Log Analytics workspace ID for the Container Apps environment to a variable.
+
+    ```bash
+    LOG_ANALYTICS_WORKSPACE_ID=`az containerapp env show \
+        --name "$ACA_ENVIRONMENT" \
+        --resource-group "$RESOURCE_GROUP" \
+        --query "properties.appLogsConfiguration.logAnalyticsConfiguration.customerId" \
+        --output tsv`
+    ```
+2. Save the name of the most recent job execution to a variable.
+
+    ```bash
+    JOB_EXECUTION_NAME=`az containerapp job execution list \
+        --name "$ACA_JOB_NAME" \
+        --resource-group "$RESOURCE_GROUP" \
+        --query "[0].name" \
+        --output tsv`
+    ```
+
+3. Run a query against Log Analytics for the job execution using the following command.
+
+    ```bash
+    az monitor log-analytics query \
+    --workspace "$LOG_ANALYTICS_WORKSPACE_ID" \
+    --analytics-query "ContainerAppConsoleLogs_CL | where ContainerGroupName_s startswith '$JOB_EXECUTION_NAME' | order by _timestamp_d asc" \
+    --query "[].Log_s"
+    ```
+
+The following output is an example of the logs printed by the job execution.
+
+```json
+[
+  "2023/10/17 15:06:41 Getting blob created event",
+  "2023/10/17 15:06:41 This is id 0a7343f3-101e-0055-2a0b-01050b06eff5",
+  "2023/10/17 15:06:41 This is url https://stblobnickdalae5de41.blob.core.windows.net/text/sample.txt",
+  "2023/10/17 15:06:41 This is api PutBlob",
+  "2023/10/17 15:06:41 This is event type Microsoft.Storage.BlobCreated",
+  "2023/10/17 15:06:41 Done!"
+]
+```
 
 ### 9. Cleanup
 
