@@ -242,7 +242,7 @@ resp, err := queueClient.DequeueMessage(context.TODO(), &azqueue.DequeueMessageO
 
 1. Create the App Environment.
 
-    ```bash
+    ```sh
     az containerapp env create \
         --name "$ACA_ENVIRONMENT" \
         --resource-group "$RESOURCE_GROUP" \
