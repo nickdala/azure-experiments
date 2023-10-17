@@ -3,6 +3,4 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
 
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
-    && apt-get install -y xdg-utils jq \
-    && apt-get clean -y && rm -rf /var/lib/apt/lists/* 
-    
+    && apt-get -y install --no-install-recommends jq
