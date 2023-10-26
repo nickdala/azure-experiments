@@ -13,6 +13,8 @@ See the [Blob storage events schema](https://learn.microsoft.com/en-us/azure/eve
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) version 2.53.0 or later.
 - [Go](https://golang.org/doc/install) version 1.21.1 or later.
 
+A [Dev Container](https://code.visualstudio.com/docs/remote/containers) is also provided to make it easy to run the code locally. Instructions on how to use the Dev Container can be found at the root of the GitHub repository [nickdala/azure-experiments](../../README.md#dev-container).
+
 ## Run the sample
 
 ### 1. Clone the repository and change directory
@@ -59,7 +61,7 @@ Namespace            RegistrationState    RegistrationPolicy
 Microsoft.EventGrid  Registered           RegistrationRequired
 ```
 
-If the *RegistrationState* is not *Registered*, the run the following to register the provider.
+If the *RegistrationState* is not *Registered*, then run the following to register the provider.
 
 ```bash
 az provider register --namespace Microsoft.EventGrid
