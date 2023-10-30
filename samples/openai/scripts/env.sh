@@ -24,7 +24,7 @@ export COSMOSDB_PASSWORD="password123!"
 #export EVENT_SUBSCRIPTION_NAME="evgs-$PROJECT-text"
 
 # ACA
-#export CONTAINER_REGISTRY_NAME="crnickdala$RAMDOM_ID"  # alphanumerics between 5 and 50 characters
+export CONTAINER_REGISTRY_NAME="crnickdalaopenai"  # alphanumerics between 5 and 50 characters
 #export CONTAINER_IMAGE_NAME="blob-container-app-nickdala:1.0"
 #export ACA_ENVIRONMENT="nickdala"
 #export ACA_JOB_NAME="print-blob-event-job"
@@ -45,7 +45,7 @@ echo "COSMOSDB_PASSWORD=$COSMOSDB_PASSWORD"
 #echo "STORAGE_CONTAINER_NAME_TEXT=$STORAGE_CONTAINER_NAME_TEXT"
 #echo "QUEUE_NAME=$QUEUE_NAME"
 #echo "EVENT_SUBSCRIPTION_NAME=$EVENT_SUBSCRIPTION_NAME"
-#echo "CONTAINER_REGISTRY_NAME=$CONTAINER_REGISTRY_NAME"
+echo "CONTAINER_REGISTRY_NAME=$CONTAINER_REGISTRY_NAME"
 #echo "CONTAINER_IMAGE_NAME=$CONTAINER_IMAGE_NAME"
 #echo "ACA_JOB_NAME=$ACA_JOB_NAME"
 echo "---------------------"

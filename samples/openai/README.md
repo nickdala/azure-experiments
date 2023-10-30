@@ -53,9 +53,11 @@ source ./scripts/env.sh
 
     ```bash
     az aks create \
-    --resource-group $RESOURCE_GROUP \ --name $AKS_CLUSTER_NAME \
+    --resource-group $RESOURCE_GROUP \
+    --name $AKS_CLUSTER_NAME \
     --node-count 2 \
-    --enable-addons http_application_routing \ --generate-ssh-keys
+    --enable-addons http_application_routing \
+    --generate-ssh-keys
     ```
 
 1. Get the AKS credentials
@@ -66,12 +68,20 @@ source ./scripts/env.sh
 
 ### 4. Deploy Azure Container Registry
 
+1. Create the Azure Container Registry
+
     ```bash
     az acr create \
     --resource-group $RESOURCE_GROUP \
-    --name $ACR_NAME \
+    --name $CONTAINER_REGISTRY_NAME \
     --sku Basic \
     --admin-enabled true \
-    --location "$REGION" \
+    --location $REGION \
     --tags system="$TAG"
     ```
+1. Log into the Azure Container Registry
+
+    ```bash
+    az acr login --name $CONTAINER_REGISTRY_NAME
+    ```
+
