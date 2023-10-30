@@ -40,6 +40,7 @@ az account list --output table
 
 az account set --subscription <subscription-id>
 ```
+
 ### 3. Install the latest version of the Azure Container Apps CLI extension.
 
 ```bash
