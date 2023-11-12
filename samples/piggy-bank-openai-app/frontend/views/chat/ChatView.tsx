@@ -5,8 +5,7 @@ import {MessageList, MessageListItem} from "@hilla/react-components/MessageList"
 import { MessageInput } from '@hilla/react-components/MessageInput';
 import { Notification } from '@hilla/react-components/Notification.js';
 import { TextField } from '@hilla/react-components/TextField.js';
-import { sayHello } from 'Frontend/generated/HelloWorldService';
-import { HelloWorldService } from 'Frontend/generated/endpoints.js';
+import { ChatService } from 'Frontend/generated/endpoints';
 import { useState } from 'react';
 
 export default function ChatView() {
@@ -19,7 +18,7 @@ export default function ChatView() {
     async function sayHello(name: string) {
         addMessage({ userName: 'You', text: name });
 
-        const message = await HelloWorldService.sayHello(name);
+        const message = await ChatService.sayHello(name);
         addMessage({ userName: 'Bot', text: message });
     }
 

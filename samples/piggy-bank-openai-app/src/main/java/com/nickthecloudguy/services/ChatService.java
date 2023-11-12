@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @BrowserCallable
 @AnonymousAllowed
 @Service
-public class HelloWorldService {
+public class ChatService {
 
     public String sayHello(String name) {
         if (name.isEmpty()) {
