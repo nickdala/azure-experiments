@@ -2,18 +2,19 @@ package com.nickthecloudguy.services;
 
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import dev.hilla.BrowserCallable;
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 @BrowserCallable
 @AnonymousAllowed
 @Service
+@AllArgsConstructor
 public class ChatService {
 
-    public String sayHello(String name) {
-        if (name.isEmpty()) {
-            return "Hello stranger";
-        } else {
-            return "Hello " + name;
-        }
+    private CustomerSupportAgent assistant;
+
+    public String chat(String message) {
+        return assistant.chat(message);
     }
 }

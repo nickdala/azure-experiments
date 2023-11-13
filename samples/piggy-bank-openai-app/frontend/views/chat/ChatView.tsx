@@ -12,18 +12,25 @@ export default function ChatView() {
     const [messages, setMessages] = useState<MessageListItem[]>([]);
 
     function addMessage(message: MessageListItem) {
-        setMessages([...messages, message]);
+        setMessages(oldMessages => [...oldMessages, message]);
     }
 
-    async function sayHello(name: string) {
-        addMessage({ userName: 'You', text: name });
+    async function sayHello(message: string) {
+        addMessage({
+            text: message,
+            userName: 'You'
+        });
 
-        const message = await ChatService.sayHello(name);
-        addMessage({ userName: 'Bot', text: message });
+        //const message = await ChatService.chat(name);
+        //addMessage({ userName: 'Bot', text: message });
+        addMessage({
+            text: "Hello!",
+            userName: 'Bot'
+        });
     }
 
     return (
-      <div className="p-m flex flex-col h-full box-border">
+      <div>
         <MessageList items={messages} />
         <MessageInput onSubmit={e => sayHello(e.detail.value)} />
       </div>

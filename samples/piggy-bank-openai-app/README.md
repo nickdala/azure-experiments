@@ -41,7 +41,7 @@ docker compose -f ./docker/compose.yaml down -v
 The project is a standard Maven project. To run it from the command line,
 type `mvnw` (Windows), or `./mvnw` (Mac & Linux).
 
-If you're running inside of a dev container, make sure to set the property spring.datasource.url inside [application-local.properties](./src/main/resources/application-local.properties) file appropriately to use host.docker.internal to connect to the PostgreSQL container.
+If you're running inside of a dev container, make sure to set the property spring.datasource.url inside [application.properties](./src/main/resources/application.properties) file appropriately to use host.docker.internal to connect to the PostgreSQL container.
 
 ```bash
 spring.datasource.url=jdbc:postgresql://host.docker.internal:54321/piggy_bank
@@ -50,7 +50,6 @@ spring.datasource.url=jdbc:postgresql://host.docker.internal:54321/piggy_bank
 Now, you can run the app by executing the following command.
 
 ```bash
-export SPRING_PROFILES_ACTIVE=local
 ./mvnw
 ```
 
