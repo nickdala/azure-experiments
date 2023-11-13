@@ -12,7 +12,11 @@ git clone https://github.com/nickdala/azure-experiments.git
 cd azure-experiments/samples/openai
 ```
 
-### 2. Login to Azure
+## Local Development
+
+## Deploy to Azure
+
+### 1. Login to Azure
 
 Login to Azure using the Azure CLI.
 
@@ -28,7 +32,7 @@ az account list --output table
 az account set --subscription <subscription-id>
 ```
 
-### 3. Set environment variables
+### 2. Set environment variables
 
 Source the `env.sh` file in the *scripts* directory. You can edit the `env.sh` file to change the default values. Note: Some Azure resources must have globally unique names.
 
@@ -38,7 +42,7 @@ Source the `env.sh` file in the *scripts* directory. You can edit the `env.sh` f
 source ./scripts/env.sh
 ```
 
-### 3. Deploy AKS
+### 3. Create Azure Resources
 
 1. Create the resource group
 
@@ -66,8 +70,6 @@ source ./scripts/env.sh
     az aks get-credentials -n $AKS_CLUSTER_NAME -g $RESOURCE_GROUP
     ```
 
-### 4. Deploy Azure Container Registry
-
 1. Create the Azure Container Registry
 
     ```bash
@@ -79,6 +81,8 @@ source ./scripts/env.sh
     --location $REGION \
     --tags system="$TAG"
     ```
+
+
 1. Log into the Azure Container Registry
 
     ```bash
